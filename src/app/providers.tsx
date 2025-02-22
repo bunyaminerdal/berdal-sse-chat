@@ -1,22 +1,22 @@
-'use client';
+"use client";
 
-import type { QueryClient } from '@tanstack/react-query';
-import { QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import type { QueryClient } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
   loggerLink,
   splitLink,
   unstable_httpBatchStreamLink,
   unstable_httpSubscriptionLink,
-} from '@trpc/client';
-import { createQueryClient } from '~/lib/query-client';
-import { trpc } from '~/lib/trpc';
-import { useState } from 'react';
-import SuperJSON from 'superjson';
+} from "@trpc/client";
+import { useState } from "react";
+import SuperJSON from "superjson";
+import { createQueryClient } from "~/lib/query-client";
+import { trpc } from "~/lib/trpc";
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined;
 const getQueryClient = () => {
-  if (typeof window === 'undefined') {
+  if (typeof window === "undefined") {
     // Server: always make a new query client
     return createQueryClient();
   } else {
@@ -27,8 +27,8 @@ const getQueryClient = () => {
 
 const getUrl = () => {
   const base = (() => {
-    if (typeof window !== 'undefined') return window.location.origin;
-    if (process.env.APP_URL) return process.env.APP_URL;
+    if (typeof window !== "undefined") return window.location.origin;
+    if (process.env.VERCEL_URL) return process.env.VERCEL_URL;
     return `http://localhost:${process.env.PORT ?? 3000}`;
   })();
 
@@ -43,7 +43,7 @@ export function TRPCProviders(props: Readonly<{ children: React.ReactNode }>) {
         // adds pretty logs to your console in development and logs errors in production
         loggerLink(),
         splitLink({
-          condition: (op) => op.type === 'subscription',
+          condition: (op) => op.type === "subscription",
           true: unstable_httpSubscriptionLink({
             url: getUrl(),
             /**
@@ -60,7 +60,7 @@ export function TRPCProviders(props: Readonly<{ children: React.ReactNode }>) {
           }),
         }),
       ],
-    }),
+    })
   );
   return (
     <QueryClientProvider client={getQueryClient()}>
