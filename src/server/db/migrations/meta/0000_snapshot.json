@@ -1,0 +1,225 @@
+{
+  "id": "927d72d8-6a02-4139-8669-b93f3e0589e8",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.sse-chat_message": {
+      "name": "sse-chat_message",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "room_id": {
+          "name": "room_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sender_id": {
+          "name": "sender_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sender_name": {
+          "name": "sender_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "extract(epoch from now()) * 1000"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "extract(epoch from now()) * 1000"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "sse-chat_message_room_id_sse-chat_room_id_fk": {
+          "name": "sse-chat_message_room_id_sse-chat_room_id_fk",
+          "tableFrom": "sse-chat_message",
+          "tableTo": "sse-chat_room",
+          "columnsFrom": [
+            "room_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "sse-chat_message_sender_id_sse-chat_user_id_fk": {
+          "name": "sse-chat_message_sender_id_sse-chat_user_id_fk",
+          "tableFrom": "sse-chat_message",
+          "tableTo": "sse-chat_user",
+          "columnsFrom": [
+            "sender_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.sse-chat_room": {
+      "name": "sse-chat_room",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "extract(epoch from now()) * 1000"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "extract(epoch from now()) * 1000"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.sse-chat_user": {
+      "name": "sse-chat_user",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "extract(epoch from now()) * 1000"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "extract(epoch from now()) * 1000"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.sse-chat_users_to_rooms": {
+      "name": "sse-chat_users_to_rooms",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "room_id": {
+          "name": "room_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "sse-chat_users_to_rooms_user_id_sse-chat_user_id_fk": {
+          "name": "sse-chat_users_to_rooms_user_id_sse-chat_user_id_fk",
+          "tableFrom": "sse-chat_users_to_rooms",
+          "tableTo": "sse-chat_user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "sse-chat_users_to_rooms_room_id_sse-chat_room_id_fk": {
+          "name": "sse-chat_users_to_rooms_room_id_sse-chat_room_id_fk",
+          "tableFrom": "sse-chat_users_to_rooms",
+          "tableTo": "sse-chat_room",
+          "columnsFrom": [
+            "room_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "sse-chat_users_to_rooms_user_id_room_id_pk": {
+          "name": "sse-chat_users_to_rooms_user_id_room_id_pk",
+          "columns": [
+            "user_id",
+            "room_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
